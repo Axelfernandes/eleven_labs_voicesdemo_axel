@@ -2,7 +2,7 @@
 
 import { useState, useRef } from 'react';
 import { VOICES, EMOTIONS } from '../constants/voices';
-import { Play, Loader2, Volume2, Mic2, Sparkles } from 'lucide-react';
+import { Play, Loader2, Volume2, Mic2, Sparkles, Download } from 'lucide-react';
 
 export default function Home() {
   const [text, setText] = useState('');
@@ -41,6 +41,10 @@ export default function Home() {
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const handleDownloadMetrics = () => {
+    window.open('/api/metrics/export', '_blank');
   };
 
   return (
@@ -160,8 +164,17 @@ export default function Home() {
         </div>
       </div>
 
-      <footer className="mt-8 text-slate-500 text-sm">
-        Powered by <span className="text-slate-300 font-medium italic">ElevenLabs</span> & <span className="text-slate-300 font-medium">AWS Amplify</span>
+      <footer className="mt-8 flex flex-col items-center gap-4">
+        <button
+          onClick={handleDownloadMetrics}
+          className="flex items-center gap-2 text-slate-400 hover:text-white transition-colors text-sm font-medium"
+        >
+          <Download size={14} />
+          Download Narration History (CSV)
+        </button>
+        <div className="text-slate-500 text-sm">
+          Powered by <span className="text-slate-300 font-medium italic">ElevenLabs</span> & <span className="text-slate-300 font-medium">AWS Amplify</span>
+        </div>
       </footer>
     </main>
   );
