@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { VOICES, EMOTIONS } from '../constants/voices';
 import { Play, Loader2, Volume2, Mic2, Sparkles, Download } from 'lucide-react';
 
@@ -11,6 +11,17 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(false);
   const [audioUrl, setAudioUrl] = useState<string | null>(null);
   const audioRef = useRef<HTMLAudioElement>(null);
+
+  // Handle playback rate adjustment (e.g., for Whisper)
+  useEffect(() => {
+    if (audioRef.current) {
+      if (emotion === 'Whisper') {
+        audioRef.current.playbackRate = 0.85;
+      } else {
+        audioRef.current.playbackRate = 1.0;
+      }
+    }
+  }, [audioUrl, emotion]);
 
   const handleNarrate = async () => {
     if (!text) return;
