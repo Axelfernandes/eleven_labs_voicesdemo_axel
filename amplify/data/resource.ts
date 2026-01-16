@@ -8,7 +8,7 @@ const schema = a.schema({
       voiceId: a.string().required(),
       timestamp: a.datetime().required(),
     })
-    .authorization((allow) => [allow.guest(), allow.publicApiKey()]),
+    .authorization((allow) => [allow.guest()]),
 });
 
 export type Schema = ClientSchema<typeof schema>;
