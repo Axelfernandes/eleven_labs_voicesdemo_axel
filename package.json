@@ -1,5 +1,5 @@
 {
-  "name": "--app",
+  "name": "emo-narrator",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -9,6 +9,13 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@aws-amplify/adapter-nextjs": "^1.7.0",
+    "@aws-amplify/api-graphql": "^4.8.3",
+    "@aws-amplify/backend": "^1.19.0",
+    "@aws-amplify/backend-cli": "^1.8.1",
+    "aws-amplify": "^6.15.10",
+    "elevenlabs-node": "^2.0.3",
+    "lucide-react": "^0.562.0",
     "next": "16.1.2",
     "react": "19.2.3",
     "react-dom": "19.2.3"

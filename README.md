@@ -1,36 +1,75 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Emo Narrator 🎙️✨
 
-## Getting Started
+A full-stack TypeScript application that brings text to life using emotional AI voices from ElevenLabs, with request metrics stored in AWS Amplify.
 
-First, run the development server:
+## 🚀 Live URL
+[Coming Soon - Deployed with Amplify Hosting]
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## 🏗️ Architecture
+
+```mermaid
+graph TD
+    User([User]) -->|Inputs Text & Emotion| Frontend[Next.js Frontend]
+    Frontend -->|POST /api/narrate| API[Next.js API Route]
+    API -->|Text + Voice Settings| ElevenLabs[ElevenLabs TTS API]
+    ElevenLabs -->|Audio Stream| API
+    API -->|Record Metrics| DynamoDB[AWS DynamoDB]
+    API -->|Audio Data| Frontend
+    Frontend -->|Play Audio| User
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🛠️ Tech Stack
+- **Frontend**: Next.js 15+ (TypeScript), Tailwind CSS, Lucide React
+- **Backend**: Next.js API Routes
+- **Database**: AWS DynamoDB (via Amplify Gen 2 Data)
+- **Voice AI**: [ElevenLabs API](https://elevenlabs.io/)
+- **Deployment**: AWS Amplify Hosting
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## ⚙️ Setup Steps
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 1. Clone the repository
+```bash
+git clone <your-repo-url>
+cd emo-narrator
+```
 
-## Learn More
+### 2. Install dependencies
+```bash
+npm install
+```
 
-To learn more about Next.js, take a look at the following resources:
+### 3. Configure Environment Variables
+Create a `.env.local` file in the root:
+```env
+ELEVENLABS_API_KEY=your_api_key_here
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### 4. Amplify Initialization (Local Sandbox)
+```bash
+npx ampx sandbox
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### 5. Run Development Server
+```bash
+npm run dev
+```
 
-## Deploy on Vercel
+## 💰 Actual Costs (Estimation)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+| Component | Tier | Cost |
+|---|-|---|
+| **Amplify Hosting** | Free Tier (12mo) | $0.00 |
+| **ElevenLabs** | Free Tier | $0.00 (up to 10k chars/mo) |
+| **AWS DynamoDB** | Free Tier | $0.00 |
+| **AWS Lambda** | Free Tier | $0.00 |
+| **TOTAL** | | **$0.00/mo** (within free limits) |
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+> [!NOTE]
+> For production usage beyond free tiers, ElevenLabs costs ~$0.30 per 1,000 characters.
+
+## 🔑 Secrets Management
+For production deployment via Amplify Hosting:
+1. Go to the **Amplify Console**.
+2. Select your app -> **App settings** -> **Environment variables**.
+3. Add `ELEVENLABS_API_KEY` with your secret key.
+4. Redeploy the application.
