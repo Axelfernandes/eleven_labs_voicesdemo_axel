@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { cookiesClient } from '../../../utils/amplify-server-utils';
 
-const ELEVENLABS_API_KEY = process.env.ELEVENLABS_API_KEY;
-const ELEVENLABS_API_URL = 'https://api.elevenlabs.io/v1/text-to-speech';
-
 export async function POST(req: NextRequest) {
+    const apiKey = process.env.ELEVENLABS_API_KEY;
+    const ELEVENLABS_API_URL = 'https://api.elevenlabs.io/v1/text-to-speech';
+
     try {
         const { text, voiceId, emotion } = await req.json();
 
@@ -12,8 +12,12 @@ export async function POST(req: NextRequest) {
             return NextResponse.json({ error: 'Text and voiceId are required' }, { status: 400 });
         }
 
-        if (!ELEVENLABS_API_KEY) {
-            return NextResponse.json({ error: 'ElevenLabs API key is missing' }, { status: 500 });
+        if (!apiKey) {
+            console.error('SERVER_ERROR: ELEVENLABS_API_KEY is not defined in the environment.');
+            return NextResponse.json({
+                error: 'ElevenLabs API key is missing',
+                message: 'Please ensure ELEVENLABS_API_KEY is set in the Amplify Console environment variables.'
+            }, { status: 500 });
         }
 
         // Call ElevenLabs API
@@ -21,7 +25,7 @@ export async function POST(req: NextRequest) {
         const response = await fetch(`${ELEVENLABS_API_URL}/${voiceId}`, {
             method: 'POST',
             headers: {
-                'xi-api-key': ELEVENLABS_API_KEY,
+                'xi-api-key': apiKey,
                 'Content-Type': 'application/json',
                 accept: 'audio/mpeg',
             },
