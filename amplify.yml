@@ -12,6 +12,8 @@ frontend:
         - npm ci
     build:
       commands:
+        - chmod +x scripts/inject-secrets.sh
+        - ./scripts/inject-secrets.sh
         - npm run build
   artifacts:
     baseDirectory: .next
