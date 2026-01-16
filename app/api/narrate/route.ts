@@ -26,15 +26,15 @@ export async function POST(req: NextRequest) {
         }
 
         // Emotion to Voice Settings Mapping
-        const emotionSettings: Record<string, { stability: number, similarity_boost: number, style: number }> = {
-            'Neutral': { stability: 0.5, similarity_boost: 0.75, style: 0.0 },
-            'Happy': { stability: 0.45, similarity_boost: 0.8, style: 0.25 },
-            'Sad': { stability: 0.6, similarity_boost: 0.7, style: 0.1 },
-            'Angry': { stability: 0.35, similarity_boost: 0.85, style: 0.5 },
-            'Excited': { stability: 0.4, similarity_boost: 0.8, style: 0.6 },
-            'Terrified': { stability: 0.3, similarity_boost: 0.7, style: 0.4 },
-            'Sarcastic': { stability: 0.45, similarity_boost: 0.8, style: 0.35 },
-            'Whisper': { stability: 0.85, similarity_boost: 0.5, style: 0.9 },
+        const emotionSettings: Record<string, { stability: number; similarity_boost: number; style: number }> = {
+            'Neutral': { stability: 0.75, similarity_boost: 0.9, style: 0.1 },
+            'Happy': { stability: 0.35, similarity_boost: 0.85, style: 0.6 },
+            'Sad': { stability: 0.3, similarity_boost: 0.8, style: 0.5 },
+            'Angry': { stability: 0.25, similarity_boost: 0.8, style: 0.8 },
+            'Excited': { stability: 0.25, similarity_boost: 0.85, style: 0.9 },
+            'Terrified': { stability: 0.2, similarity_boost: 0.75, style: 0.9 },
+            'Sarcastic': { stability: 0.3, similarity_boost: 0.85, style: 0.7 },
+            'Whisper': { stability: 0.4, similarity_boost: 0.7, style: 1.0 },
         };
 
         const settings = emotionSettings[emotion] || emotionSettings['Neutral'];
@@ -74,15 +74,18 @@ export async function POST(req: NextRequest) {
 
         // Record Metrics (non-blocking)
         try {
-            await cookiesClient.models.Metric.create({
-                text,
-                emotion,
-                voiceId,
-                timestamp: new Date().toISOString(),
-            });
+            if (cookiesClient.models && cookiesClient.models.Metric) {
+                await cookiesClient.models.Metric.create({
+                    text,
+                    emotion,
+                    voiceId,
+                    timestamp: new Date().toISOString(),
+                });
+            } else {
+                console.warn('Metrics skip: Amplify Data models not initialized locally.');
+            }
         } catch (metricError) {
             console.error('Failed to record metrics:', metricError);
-            // Continue anyway, don't fail the request if metrics fail
         }
 
         return new NextResponse(audioBuffer, {

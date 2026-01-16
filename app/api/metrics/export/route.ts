@@ -3,6 +3,14 @@ import { cookiesClient } from '../../../../utils/amplify-server-utils';
 
 export async function GET(req: NextRequest) {
     try {
+        if (!cookiesClient.models || !cookiesClient.models.Metric) {
+            console.warn('Amplify Data models are not initialized. Check amplify_outputs.json');
+            return NextResponse.json({
+                error: 'Data models not initialized',
+                message: 'Please run "npx ampx sandbox" or "ampx generate outputs" to sync your backend configuration.'
+            }, { status: 503 });
+        }
+
         const { data: metrics, errors } = await cookiesClient.models.Metric.list();
 
         if (errors) {
