@@ -3,7 +3,8 @@
 A full-stack TypeScript application that brings text to life using emotional AI voices from ElevenLabs, with request metrics stored in AWS Amplify.
 
 ## 🚀 Live URL
-[Coming Soon - Deployed with Amplify Hosting]
+
+Here is the link to the app - https://main.d11c506w0cprcx.amplifyapp.com/ 
 
 ## 🏗️ Architecture
 
